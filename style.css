@@ -1,0 +1,66 @@
+* {
+    margin: 0px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header {
+    background-color: gray;
+    width: max;
+    height: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: max;
+}
+
+#add-book {
+    margin: 20px;
+    height: 5rem;
+    width: 14rem;
+    border-radius: 10px;
+}
+
+#book-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(300px, 4fr));
+    gap:10px
+}
+
+.book {
+    background-color: wheat;
+    border-radius: 10px;
+    height: 20rem;
+    width: 15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.book-text {
+    margin: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.button-read {
+    margin: 10px;
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+}
+
+.remove {
+    margin: 10px;
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+}
