@@ -1,4 +1,4 @@
-const myLibrary = [];
+const libary = new Library();
 const bookGrid = document.getElementById("book-grid");
 
 function Book(title, author, pages, read) {
@@ -8,8 +8,20 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
-function addBookToLibrary() {
-    
+function Library() {
+    this.books = [];
+    this.addBook = function(book) {
+        this.books.push(book);
+    };
+    this.removeBook = function(title) {
+        this.books.filter((book) => book.title !== title);
+    }
+    this.getBook = function(title) {
+        this.books.find((book) => book.title === title);
+    }
+    this.isInLibrary = function(newBook) {
+        this.books.some((book) => book.title === newBook.title);
+    }
 }
 
 const openAddBookModal = () => {
