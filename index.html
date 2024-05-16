@@ -10,6 +10,13 @@
     <div class="header"> <h1 style="font-size: 50px;">Library</h1></div>
     <div class="wrapper">
         <button id="add-book"><p style="font-size: 2rem;">Add Book</p></button>
+        <form id="add-book-form" class="hidden">
+            <div class="input-box"><input type="text" name="" id="name-input" class="input-field" placeholder="Title" required maxlength="100"></div>
+            <div class="input-box"><input type="text" name="" id="author-input" class="input-field" placeholder="Author" required maxlength="100"></div>
+            <div class="input-box"> <input type="text" name="" id="pages-input" class="input-field" placeholder="Pages" required maxlength="100"> </div>
+            <div class="input-box"><label style="font-size: 25px; margin-right: 10px; margin-top: -10px;">Have you read it?</label> <input type="checkbox" name="" id="read-input" style="transform: scale(1.5);"></div>
+            <div class="input-box"> <input type="submit" class="input-field" style="margin-top: -20px; font-weight: bold;"> </div>
+        </form>
         <div id="book-grid">
         </div>
     </div>
