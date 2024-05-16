@@ -67,18 +67,18 @@
 
 #add-book-form {
     position: fixed;
+    display: none;
     top: 25%;
-    display: flex;
     flex-direction: column;
     border: black solid 1px;
     border-radius: 10px;
+    transition: 0.3s ease-in-out;
     background-color: rgb(240, 240, 240);
-    transition: opacity 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
 }
 
-#add-book-form.hidden {
-    display: none;
+#add-book-form.active {
+    display: block;
+    z-index: 1;
 }
 
 .input-box {
@@ -97,4 +97,19 @@
     width: 80%;
     height: 60%;
     border: beige solid 0px;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 50%;
+}
+
+#overlay.active {
+    display: block;
 }

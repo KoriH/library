@@ -37,7 +37,13 @@ const addButton = document.getElementById("add-book")
 addButton.addEventListener('click', function () {
 
     const addBookModal = document.getElementById("add-book-form");
-    addBookModal.classList.remove("hidden");
+    addBookModal.classList.add("active");
+    const overlay = document.getElementById("overlay");
+    overlay.classList.add('active')
+    overlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        addBookModal.classList.remove('active');
+    })
 
 
     // let book = document.createElement('div');
