@@ -30,6 +30,7 @@ const addBookForm = document.getElementById("add-book-form");
 const addButtonForm = document.getElementById("add-book")
 const submit = document.getElementById("enter");
 
+
 const openAddBookModal = () => {
     addBookForm.reset();
     addBookForm.classList.add('active');
@@ -70,11 +71,47 @@ submit.addEventListener('click', function() {
     closeAddBookModal();
 })
 
+const createReadButton = function() {
+    const read = document.getElementById('read-input');
+    const readButton = document.createElement('button');
+    const readButtonText = document.createElement('p');
+
+    readButtonText.className = 'book-text';
+    readButton.className = 'button-read';
+    readButton.appendChild(readButtonText);
+
+    if (read.checked) {
+        readButtonText.textContent = 'Read';
+        readButton.style.backgroundColor = 'green';
+    } else {
+        readButtonText.textContent = 'Unread';
+        readButton.style.backgroundColor = 'red';
+    }
+
+    readButton.addEventListener('click', function() {
+        console.log('called');
+        if (read.checked) {
+            read.checked = false;
+            readButtonText.textContent = 'Unread';
+            readButton.style.backgroundColor = 'red';
+        } else {
+            read.checked = true;
+            readButtonText.textContent = 'Read';
+            readButton.style.backgroundColor = 'green';
+        }
+    })
+
+    return readButton;
+
+}
+
+
+
+
 const createBookElement = function() {
     let titleContent = document.getElementById('name-input').value;
     let authorContent = document.getElementById('author-input').value;
     let pagesContent = document.getElementById('pages-input').value;
-    let read = document.getElementById('read-input').value
 
     let book = document.createElement('div');
     book.className = 'book';
@@ -91,17 +128,11 @@ const createBookElement = function() {
     pages.className = 'book-text';
     pages.textContent = pagesContent;
 
-    let readButton = document.createElement('button');
-    readButton.className = 'button-read';
-
-    let readButtonText = document.createElement('p');
-    readButtonText.className = 'book-text';
-    readButtonText.textContent = 'Read';
-    readButton.appendChild(readButtonText);
+    const readButton = createReadButton();
 
     let removeButton = document.createElement('button');
     removeButton.className = 'remove';
-    
+
     let removeButtonText = document.createElement('p');
     removeButtonText.className = 'book-text';
     removeButtonText.textContent = 'Remove';
