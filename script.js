@@ -89,7 +89,6 @@ const createReadButton = function() {
     }
 
     readButton.addEventListener('click', function() {
-        console.log('called');
         if (read.checked) {
             read.checked = false;
             readButtonText.textContent = 'Unread';
@@ -105,8 +104,24 @@ const createReadButton = function() {
 
 }
 
+const createRemoveButtom = function() {
+    let removeButton = document.createElement('button');
+    removeButton.className = 'remove';
 
+    let removeButtonText = document.createElement('p');
+    removeButtonText.className = 'book-text';
+    removeButtonText.textContent = 'Remove';
+    removeButton.appendChild(removeButtonText);
 
+    removeButton.addEventListener('click', function() {
+        let bookElement = removeButton.parentElement;
+        if (bookElement) {
+            bookElement.remove();
+        }
+    });
+
+    return removeButton;
+}
 
 const createBookElement = function() {
     let titleContent = document.getElementById('name-input').value;
@@ -130,14 +145,8 @@ const createBookElement = function() {
 
     const readButton = createReadButton();
 
-    let removeButton = document.createElement('button');
-    removeButton.className = 'remove';
-
-    let removeButtonText = document.createElement('p');
-    removeButtonText.className = 'book-text';
-    removeButtonText.textContent = 'Remove';
-    removeButton.appendChild(removeButtonText);
-
+    const removeButton = createRemoveButtom();
+    
     book.appendChild(title);
     book.appendChild(author);
     book.appendChild(pages);
