@@ -1,4 +1,4 @@
-const libary = new Library();
+const library = new Library();
 const bookGrid = document.getElementById("book-grid");
 
 function Book(title, author, pages, read) {
@@ -14,65 +14,79 @@ function Library() {
     this.addBook = function(book) {
         this.books.push(book);
     };
+
     this.removeBook = function(title) {
-        this.books.filter((book) => book.title !== title);
-    }
+        this.books = this.books.filter((book) => book.title !== title);
+    };
+
     this.getBook = function(title) {
-        this.books.find((book) => book.title === title);
-    }
+        return this.books.find((book) => book.title === title);
+    };
+
     this.isInLibrary = function(newBook) {
-        this.books.some((book) => book.title === newBook.title);
-    }
+        return this.books.some((book) => book.title === newBook.title);
+    };
+
+    this.saveLibrary = function() {
+        localStorage.setItem('library', JSON.stringify(this.books));
+    };
+
+    this.loadLibrary = function() {
+        const storedLibrary = JSON.parse(localStorage.getItem('library'));
+        if (storedLibrary) {
+            this.books = storedLibrary;
+        }
+    };
 }
+
 const overlay = document.getElementById("overlay");
-const addButton = document.getElementById("add-book")
+const addButton = document.getElementById("add-book");
 const addBookForm = document.getElementById("add-book-form");
-const addButtonForm = document.getElementById("add-book")
 const submit = document.getElementById("enter");
 
-
+// Open and close modal functions
 const openAddBookModal = () => {
     addBookForm.reset();
     addBookForm.classList.add('active');
     overlay.classList.add('active');
-}
+};
 
 const closeAddBookModal = () => {
     addBookForm.classList.remove('active');
     overlay.classList.remove('active');
-}
+};
 
+// Event listeners for opening and closing modal
+addButton.addEventListener('click', openAddBookModal);
 
-addButton.addEventListener('click', function () {
-    openAddBookModal();
-})
+overlay.addEventListener('click', () => {
+    closeAddBookModal();
+});
 
-overlay.addEventListener('click', function() {
-    addBookForm.classList.remove('active');
-    overlay.classList.remove('active');
-})
-
-submit.addEventListener('click', function() {
+// Event listener for submitting the form
+submit.addEventListener('click', () => {
     let title = document.getElementById('name-input').value;
     let author = document.getElementById('author-input').value;
     let pages = document.getElementById('pages-input').value;
-    let read = document.getElementById('read-input').value
+    let read = document.getElementById('read-input').checked;
+
     let book = new Book(title, author, pages, read);
 
-    if (libary.isInLibrary(book)) {
-        alert("Book already in library!")
+    if (library.isInLibrary(book)) {
+        alert("Book already in library!");
     } else if (!title || !author || !pages) {
         closeAddBookModal();
     } else {
-        libary.addBook(book);
-        createBookElement();
+        library.addBook(book);
+        library.saveLibrary();
+        createBookElement(book);
     }
 
     closeAddBookModal();
-})
+});
 
-const createReadButton = function() {
-    const read = document.getElementById('read-input');
+// Function to create a read button
+const createReadButton = (book) => {
     const readButton = document.createElement('button');
     const readButtonText = document.createElement('p');
 
@@ -80,7 +94,7 @@ const createReadButton = function() {
     readButton.className = 'button-read';
     readButton.appendChild(readButtonText);
 
-    if (read.checked) {
+    if (book.read) {
         readButtonText.textContent = 'Read';
         readButton.style.backgroundColor = 'green';
     } else {
@@ -89,22 +103,22 @@ const createReadButton = function() {
     }
 
     readButton.addEventListener('click', function() {
-        if (read.checked) {
-            read.checked = false;
-            readButtonText.textContent = 'Unread';
-            readButton.style.backgroundColor = 'red';
-        } else {
-            read.checked = true;
+        book.read = !book.read;
+        if (book.read) {
             readButtonText.textContent = 'Read';
             readButton.style.backgroundColor = 'green';
+        } else {
+            readButtonText.textContent = 'Unread';
+            readButton.style.backgroundColor = 'red';
         }
-    })
+        library.saveLibrary();
+    });
 
     return readButton;
+};
 
-}
-
-const createRemoveButtom = function() {
+// Function to create a remove button
+const createRemoveButton = (bookElement, book) => {
     let removeButton = document.createElement('button');
     removeButton.className = 'remove';
 
@@ -114,44 +128,47 @@ const createRemoveButtom = function() {
     removeButton.appendChild(removeButtonText);
 
     removeButton.addEventListener('click', function() {
-        let bookElement = removeButton.parentElement;
-        if (bookElement) {
-            bookElement.remove();
-        }
+        library.removeBook(book.title);
+        library.saveLibrary();
+        bookElement.remove();
     });
 
     return removeButton;
-}
+};
 
-const createBookElement = function() {
-    let titleContent = document.getElementById('name-input').value;
-    let authorContent = document.getElementById('author-input').value;
-    let pagesContent = document.getElementById('pages-input').value;
-
-    let book = document.createElement('div');
-    book.className = 'book';
+// Function to create a book element
+const createBookElement = (book) => {
+    let bookElement = document.createElement('div');
+    bookElement.className = 'book';
 
     let title = document.createElement('p');
     title.className = 'book-text';
-    title.textContent = titleContent;
+    title.textContent = book.title;
     
     let author = document.createElement('p');
     author.className = 'book-text';
-    author.textContent = authorContent;
+    author.textContent = book.author;
 
     let pages = document.createElement('p');
     pages.className = 'book-text';
-    pages.textContent = pagesContent;
+    pages.textContent = book.pages;
 
-    const readButton = createReadButton();
-
-    const removeButton = createRemoveButtom();
+    const readButton = createReadButton(book);
+    const removeButton = createRemoveButton(bookElement, book);
     
-    book.appendChild(title);
-    book.appendChild(author);
-    book.appendChild(pages);
-    book.appendChild(readButton);
-    book.appendChild(removeButton);
+    bookElement.appendChild(title);
+    bookElement.appendChild(author);
+    bookElement.appendChild(pages);
+    bookElement.appendChild(readButton);
+    bookElement.appendChild(removeButton);
 
-    bookGrid.appendChild(book);
-}
+    bookGrid.appendChild(bookElement);
+};
+
+// Initial setup: Load library from local storage
+document.addEventListener('DOMContentLoaded', () => {
+    library.loadLibrary();
+    library.books.forEach(book => {
+        createBookElement(book);
+    });
+});
